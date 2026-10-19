@@ -1,0 +1,26 @@
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Local tooling scratch
+.claude/
+
+# Local helper scripts (personal use only, not part of the project)
+scripts/
+
+# Safety net: never commit firmware images, flash dumps or extracted trees -
+# this repo ships code only, never TE firmware or key material.
+*.tfw
+*.zfw
+*.bin
+*.ldr
+decrypted/
+encrypted/
