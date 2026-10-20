@@ -7,19 +7,19 @@
 <meta name="description" content="Reads the TX-6's AES-256 keys in the browser. No keys are stored on this site - everything is derived locally from your unit and your own firmware file.">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#FFF6E6">
-<link rel="icon" type="image/svg+xml" href="logo.svg">
-<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
 <div class="wrap">
 
 <header class="hero">
   <div class="hero-head">
-    <div class="logo-blk">
-      <img class="logo" src="logo.svg" alt="The Bag of Waffles logo: a brown paper bag overflowing with waffles" width="118" height="118">
-    </div>
+    <a class="logo-blk" href="../" title="Back to all Ferret tools">
+      <img class="logo" src="../assets/logo.svg" alt="The Bag of Waffles logo: a brown paper bag overflowing with waffles" width="118" height="118">
+    </a>
     <div class="hero-title">
-      <h1>Ferret</h1>
+      <h1><a href="../" title="Back to all Ferret tools">Ferret</a></h1>
       <p class="tag">Reads the AES-256 keys out of your <span style="white-space:nowrap">TX-6</span> firmware - in your browser.</p>
     </div>
   </div>
@@ -181,7 +181,7 @@
     </div>
   </details>
 
-  <details class="card" id="d-log">
+  <details class="card" id="d-log" open>
     <summary>Live log</summary>
     <div class="actions"><button id="clear" class="btn small">Clear</button></div>
     <pre id="log"></pre>
@@ -190,6 +190,7 @@
 
 <footer>
   <p>Obviously, not affiliated with Teenage Engineering.</p>
+  <p><a href="https://github.com/bagofwaffles/ferret" target="_blank" rel="noopener">github.com/bagofwaffles/ferret</a></p>
 </footer>
 
 </div>

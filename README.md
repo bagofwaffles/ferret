@@ -1,12 +1,16 @@
 # Ferret
 
-Bag of Waffles' browser tools for Teenage Engineering hardware. First one up:
+Bag of Waffles' browser tools for Teenage Engineering hardware. Everything runs
+client-side: no server, no build step, nothing uploaded. The root page is a
+device picker; each device lives in its own sibling folder.
 
 | device | tool | what it does |
 |---|---|---|
-| **TX-6** | [Ferret](tx-6/) | Reads the unit's AES-256 keys in the browser - no server, no build step |
+| **TX-6** | [tx-6/](tx-6/) | Reads the unit's AES-256 keys in the browser - no server, no build step |
+| **OP-XY** | [op-xy/](op-xy/) | Walks you through enabling the hidden dev menu in te-boot, over the unit's USB MIDI interface |
 
-More devices will land as sibling folders next to `tx-6/`.
+More devices will land as sibling folders next to `tx-6/` and `op-xy/`, with a
+card on the root page.
 
 ## Ferret - TX-6 key reader
 
@@ -26,16 +30,30 @@ the connected unit; the built-in key is computed from the visitor's own
 > It goes in as a normal firmware update, and when you're done the page has you
 > **re-flash the factory firmware** so the patched build doesn't stay on your unit.
 
+## Ferret - OP-XY dev mode
+
+Turns on te-boot's hidden dev mode (`3. dev menu`) on an OP-XY, entirely in the
+browser. It finds the unit's te-boot USB MIDI interface, talks to it with TE
+SysEx messages, and sends the documented `0xAC` dev-marker command - whose
+challenge value is read live from the unit (`0x1F` returns OTP field `0x13`).
+
+No firmware and no keys are involved: te-boot writes its own `bootloader.dev`
+marker, and Plan B can turn the mode back off. Full write-up in
+[`op-xy/README.md`](op-xy/README.md).
+
 Run it locally:
 
 ```bash
-cd tx-6
-python3 -m http.server 8000      # -> http://localhost:8000/
+python3 -m http.server 8000      # serve the repo root -> http://localhost:8000/
 ```
 
-Requires **Chrome or Edge on a desktop** (WebMIDI + Web Serial + File System
-Access all need a secure context). Full technical write-up:
-[`tx-6/README.md`](tx-6/README.md).
+All styling (one stylesheet shared by the picker and every tool) and the shared
+images live in `assets/`; each device folder keeps only its page and its
+JavaScript. Serve the repo root so `../assets/` resolves.
+
+Requires **Chrome or Edge on a desktop** (the tools use File System Access, Web
+Serial and WebMIDI, which all need a secure context). Per-tool technical
+write-ups: [`tx-6/README.md`](tx-6/README.md) and [`op-xy/README.md`](op-xy/README.md).
 
 ## Disclaimers
 

@@ -7,11 +7,11 @@ step, nothing uploaded.
 ```
 index.html     the guided wizard (UI + instructions)
 app.js         all logic (WebMIDI + File System Access + Web Serial + WebCrypto)
-style.css      light theme, system font stack, no external dependencies
-logo.svg       Bag of Waffles logo (also the favicon)
-waffles.svg    seamless waffle-tile page background (faded, decorative)
 patch.js       our patch: a ~120 KB ciphertext tail (base64) + parameters
 ```
+
+All styling and the shared images live in `../assets/` (one stylesheet for every
+page) - serve the repo root, not this folder alone.
 
 **No TE firmware and no keys are shipped here** - and the page itself stores no
 key material. `patch.js` only contains a small ciphertext blob that has to be

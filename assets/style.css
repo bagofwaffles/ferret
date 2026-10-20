@@ -1,3 +1,6 @@
+/* Ferret - one stylesheet for every page (picker + tools).
+   Loaded as assets/style.css from the root and ../assets/style.css from each
+   tool folder. waffles.svg / logo.svg sit next to this file. */
 :root{
   --bg:#FFF6E6; --card:#FFFFFF; --ink:#463122; --dim:#967F68; --line:#F1DFC3; --line2:#E7CFA9;
   --gold:#F2A93B; --gold-hi:#F9C463; --gold-edge:#C9821B; --gold-ink:#5A3A06; --brown:#3B2A1B;
@@ -27,13 +30,14 @@ code{font:600 14.3px var(--mono);background:#FFF3DA;border:1px solid #F1DFC3;bor
 .hero-head{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
 .logo{width:118px;height:118px;filter:drop-shadow(0 8px 12px rgba(150,100,30,.2))}
 .logo-blk{flex:none;display:flex;flex-direction:column;align-items:center;gap:7px}
+.hero a{color:inherit;text-decoration:none}
 .hero h1{font:700 clamp(33px,6vw,46.2px)/1.02 var(--font);margin:0}
 .hero-title{flex:1 1 0;min-width:0}
-.hero-text{margin-top:16px;max-width:660px}
+.hero-text{margin-top:16px}
 .tag{margin:6px 0 0;font-size:17.6px;color:#6F5B47}
 .promise{margin:10px 0 0;font-size:15.4px;color:#8A7259}
 .warnbar{margin:14px 0 0;padding:10px 14px;background:var(--err-bg);border:1px solid #F3C1B3;
-  border-radius:6px;font-size:14.9px;color:#8C3A22;max-width:660px}
+  border-radius:6px;font-size:14.9px;color:#8C3A22}
 .warnbar b{color:#B1401F}
 @media(max-width:640px){.wrap{padding:0 18px 30px;margin:14px auto}.hero{padding:20px 0 18px}.hero-head{gap:14px}.logo{width:86px;height:86px}.tag{font-size:16.5px}}
 
@@ -80,35 +84,14 @@ code{font:600 14.3px var(--mono);background:#FFF3DA;border:1px solid #F1DFC3;bor
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center}
 .actions:empty{display:none}
 
-/* dropzone */
-.drop{display:block;margin:14px 0 2px;border:2.5px dashed var(--line2);border-radius:10px;
-  padding:20px;text-align:center;color:#A78F76;cursor:pointer;background:#FFFDF8;
-  transition:border-color .15s,background .15s;font-weight:600}
-.drop b{color:#8A6B3F}
-.drop .sub{font-size:14.9px}
-.drop:hover,.drop.hover{border-color:var(--gold);background:#FFF7E3}
-.drop.ok{border-style:solid;border-color:#9ED39E;background:var(--ok-bg);color:#3E7F46}
-.drop.ok b{color:#357B3E}
-
 /* inputs */
 input:not([type=file]),select{width:100%;background:#FFFDF8;border:2px solid var(--line);
   border-radius:8px;padding:11px 13px;font:inherit;color:var(--ink)}
 input:not([type=file]):focus,select:focus{outline:3px solid #F9C463;outline-offset:1px;border-color:var(--gold)}
-#keyfield{font:14.9px/1.5 var(--mono)}
 label{display:block;font:700 14.9px var(--font);color:#7A6449;margin:14px 0 6px}
-label.drop{font:inherit;color:#A78F76;margin:14px 0 2px}
 .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 #port{max-width:280px}
 .mansub{font:700 14.3px var(--font);color:#8A6B3F;margin:16px 0 0}
-
-/* key box */
-.keybox{padding:18px 0 18px 46px;border-top:1px solid var(--line)}
-.keybox h2{margin:0;font-size:22px}
-.keyout{font:700 16.5px/1.75 var(--mono);word-break:break-all;background:#FFFDF7;border:2px dashed #EBCF9C;
-  border-radius:10px;padding:15px;color:#7A5005;margin:12px 0 0}
-.keylabel{font:700 15.4px var(--font);color:#7A6449;margin:16px 0 6px}
-.keymeta{font-size:14.3px;color:var(--dim);margin:6px 0 0}
-.keybox .actions{margin-top:14px}
 
 /* cards / drawers */
 .card{padding:14px 0 12px 46px;border-top:1px solid var(--line)}
@@ -144,14 +127,10 @@ details.card[open]>summary::after{transform:translateY(-50%) rotate(180deg)}
 #log .rx{color:#D8B4FF}
 #log .info{color:#F7EAD6}
 
-/* decrypt output */
-#dout{margin-top:12px}
-#dout a{font-weight:800}
-
 /* footer */
+footer p{margin:0}
 footer{text-align:center;color:#8A7259;font-size:14.9px;margin-top:26px;border-top:1px solid var(--line);padding-top:22px}
 footer b{font-weight:800}
-.fine{font-size:13.2px;color:#A78F76;max-width:600px;margin:8px auto 0}
 
 /* toast */
 .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(16px);
@@ -160,3 +139,65 @@ footer b{font-weight:800}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 :focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:6px}
+
+/* ---------------- device picker (index.html) ---------------- */
+
+/* device cards */
+.devices{list-style:none;margin:22px 0 8px;padding:0;display:grid;gap:16px}
+.device{border:2px solid var(--line);border-radius:12px;background:#FFFDF8;transition:border-color .15s,background .15s,box-shadow .15s}
+.device a{display:block;padding:18px 20px;text-decoration:none;color:inherit;border-radius:10px}
+.device:hover{border-color:var(--gold);background:#FFF7E3;box-shadow:0 4px 0 #EDDCC0}
+.drow{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.dname{font:800 24.2px/1.1 var(--font);letter-spacing:-.01em}
+.dwhat{font:700 13.2px var(--font);color:#9C7637;background:#FFF3DA;border-radius:5px;padding:3px 9px;text-transform:uppercase;letter-spacing:.02em}
+.dgo{margin-left:auto;font:800 15.4px var(--font);color:#B4781E}
+.device:hover .dgo{color:#8A5A12}
+.ddesc{display:block;margin-top:9px;font-size:15.4px;color:#8A7259}
+.ddesc b{color:#6F5B47}
+.dmeta{display:block;margin-top:10px;font-size:13.7px;color:#A78F76}
+.dmeta.warn{color:#B1401F}
+
+/* ---------------- TX-6 ---------------- */
+
+/* dropzone */
+.drop{display:block;margin:14px 0 2px;border:2.5px dashed var(--line2);border-radius:10px;
+  padding:20px;text-align:center;color:#A78F76;cursor:pointer;background:#FFFDF8;
+  transition:border-color .15s,background .15s;font-weight:600}
+.drop b{color:#8A6B3F}
+.drop .sub{font-size:14.9px}
+.drop:hover,.drop.hover{border-color:var(--gold);background:#FFF7E3}
+.drop.ok{border-style:solid;border-color:#9ED39E;background:var(--ok-bg);color:#3E7F46}
+.drop.ok b{color:#357B3E}
+
+/* inputs */
+#keyfield{font:14.9px/1.5 var(--mono)}
+label.drop{font:inherit;color:#A78F76;margin:14px 0 2px}
+
+/* key box */
+.keybox{padding:18px 0 18px 46px;border-top:1px solid var(--line)}
+.keybox h2{margin:0;font-size:22px}
+.keyout{font:700 16.5px/1.75 var(--mono);word-break:break-all;background:#FFFDF7;border:2px dashed #EBCF9C;
+  border-radius:10px;padding:15px;color:#7A5005;margin:12px 0 0}
+.keylabel{font:700 15.4px var(--font);color:#7A6449;margin:16px 0 6px}
+.keymeta{font-size:14.3px;color:var(--dim);margin:6px 0 0}
+.keybox .actions{margin-top:14px}
+
+/* decrypt output */
+#dout{margin-top:12px}
+#dout a{font-weight:800}
+
+/* ---------------- OP-XY ---------------- */
+
+/* reference / dry-run input */
+#dry-otp{font:14.9px/1.5 var(--mono)}
+
+/* connected unit box */
+#unitbox{padding:14px 0 2px}
+.unitrow{display:flex;gap:10px;font-size:15.4px;color:var(--dim);border-bottom:1px dashed var(--line);padding:5px 2px}
+.unitrow span{flex:none;width:130px;color:#8A6B3F;font-weight:700}
+.unitrow b{font-family:var(--mono);font-size:14.9px;color:#6F5B47;word-break:break-all}
+
+/* reference / dry-run output */
+#dryout{margin-top:12px}
+.wire{background:var(--brown);color:#F7EAD6;border-radius:10px;padding:12px;
+  font:13.8px/1.6 var(--mono);white-space:pre-wrap;word-break:break-all;margin:8px 0 0}

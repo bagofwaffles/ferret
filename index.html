@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ferret - browser tools for TE hardware | Bag of Waffles</title>
+<meta name="description" content="Bag of Waffles' browser tools for Teenage Engineering hardware: a TX-6 key reader and an OP-XY dev-mode enabler. Client-side only - nothing is uploaded.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#FFF6E6">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero-head">
+    <div class="logo-blk">
+      <img class="logo" src="assets/logo.svg" alt="The Bag of Waffles logo: a brown paper bag overflowing with waffles" width="118" height="118">
+    </div>
+    <div class="hero-title">
+      <h1>Ferret</h1>
+      <p class="tag">Bag of Waffles' browser tools for Teenage Engineering hardware.</p>
+    </div>
+  </div>
+  <div class="hero-text">
+    <p class="promise">Every tool runs entirely in your browser - no server, no accounts, nothing uploaded. Each
+      one talks to your unit over its own USB interface and stores nothing about it.</p>
+    <p class="promise">Pick a device:</p>
+  </div>
+</header>
+
+<main>
+  <ul class="devices">
+    <li class="device">
+      <a href="tx-6/">
+        <span class="drow"><span class="dname">TX-6</span><span class="dwhat">key reader</span><span class="dgo">open &rarr;</span></span>
+        <span class="ddesc">Reads the unit's AES-256 keys in the browser: the OTP key straight from your connected
+          TX-6, the built-in key derived from your own official firmware file. It installs a tiny patched
+          bootloader to do the read, and walks you through re-flashing the factory firmware afterwards.</span>
+        <span class="dmeta warn">modifies the unit's firmware (reversibly) - use at your own risk</span>
+      </a>
+    </li>
+    <li class="device">
+      <a href="op-xy/">
+        <span class="drow"><span class="dname">OP-XY</span><span class="dwhat">dev mode</span><span class="dgo">open &rarr;</span></span>
+        <span class="ddesc">Walks you through enabling the hidden <b>3. dev menu</b> in the OP-XY's te-boot, over the
+          unit's own USB MIDI interface. No firmware is read or written, no keys are involved - te-boot just writes
+          its own <code>bootloader.dev</code> marker.</span>
+        <span class="dmeta">writes no firmware; the dev menu itself can be destructive - read the page</span>
+      </a>
+    </li>
+  </ul>
+</main>
+
+<footer>
+  <p>Obviously, not affiliated with Teenage Engineering.</p>
+  <p><a href="https://github.com/bagofwaffles/ferret" target="_blank" rel="noopener">github.com/bagofwaffles/ferret</a></p>
+</footer>
+
+</div>
+<noscript><p style="text-align:center;padding:20px">This page works without JavaScript, but the tools need it.</p></noscript>
+</body>
+</html>

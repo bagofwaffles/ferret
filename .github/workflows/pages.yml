@@ -22,9 +22,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Stage the site (tool folders + root page)
+        run: |
+          mkdir _site
+          cp -R index.html assets README.md LICENSE tx-6 op-xy _site/
+          # (add new device folders to the line above)
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: tx-6
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4

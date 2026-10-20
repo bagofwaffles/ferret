@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ferret - OP-XY dev mode | Bag of Waffles</title>
+<meta name="description" content="Turns on the hidden dev menu in a Teenage Engineering OP-XY's te-boot, in your browser. No firmware, no keys - just the unit's own USB MIDI interface.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#FFF6E6">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero-head">
+    <a class="logo-blk" href="../" title="Back to all Ferret tools">
+      <img class="logo" src="../assets/logo.svg" alt="The Bag of Waffles logo: a brown paper bag overflowing with waffles" width="118" height="118">
+    </a>
+    <div class="hero-title">
+      <h1><a href="../" title="Back to all Ferret tools">Ferret</a></h1>
+      <p class="tag">Turns on the hidden <b>dev menu</b> in your <span style="white-space:nowrap">OP-XY</span>'s te-boot - in your browser.</p>
+    </div>
+  </div>
+  <div class="hero-text">
+    <p class="promise">No firmware is read or written, no keys are involved, and nothing is sent to a server. The page talks to the unit's own USB MIDI interface and flips a service flag the firmware already has.</p>
+    <p class="warnbar">Dev mode enables options that could be dangerous, don't enable it unless you know what you're doing.</p>
+  </div>
+</header>
+
+<main>
+  <details class="card" id="d-how">
+    <summary>How this works</summary>
+    <p class="hint" style="margin-top:12px">te-boot (the OP-XY's bootloader) has a hidden dev mode. When it is on, the main menu gains an entry <b>3. dev menu</b>.</p>
+    <ol class="howlist">
+      <li><b>The flag.</b> te-boot turns dev mode on when the file <code>bootloader.dev</code> exists - or at runtime through a console command, <code>0xAC</code>. This page uses the command, so nothing is flashed.</li>
+      <li><b>The challenge.</b> Before acting, <code>0xAC</code> checks a 16-byte response derived from a value the unit itself reports: command <code>0x1F</code> returns OTP field <code>0x13</code>, and the response is that field XOR <code>99 4A F3 ED</code>. The page reads the field live from your unit and computes the response - no secret is stored on this site.</li>
+      <li><b>The transport.</b> While the te-boot menu is on screen, the unit offers a USB MIDI interface. The console commands travel inside TE SysEx messages (<code>F0 00 20 76 21 66 &hellip; F7</code>) carrying the same te-serial frames te-boot's internal console uses. The page probes the ports and finds the unit itself.</li>
+      <li><b>No readback.</b> te-boot has no command that reports dev mode (the flag is only used to render the menu), and <code>0xAC</code> deliberately sends no reply - so the menu on the unit's screen is the one and only confirmation. The page asks you to read it.</li>
+      <li><b>Reversible.</b> Plan B below can remove the marker again (te-boot deletes <code>bootloader.dev</code> and clears the flag). This page never touches firmware, SPI or the OS partitions.</li>
+      <li><b>Local only.</b> There is no server: the page only sends MIDI messages to your unit over USB.</li>
+    </ol>
+  </details>
+
+  <ol class="steps" id="wizard">
+    <li class="step pending" id="s-check">
+      <div class="num"><span class="ico">1</span><span class="tick">ok</span></div>
+      <div class="sbody">
+        <h2>Browser check <span class="sn" id="sn-check"></span></h2>
+        <div class="chips" id="support"></div>
+        <p class="hint" id="checkhint">Checking browser support...</p>
+      </div>
+    </li>
+
+    <li class="step pending" id="s-teboot">
+      <div class="num"><span class="ico">2</span><span class="tick">ok</span></div>
+      <div class="sbody">
+        <h2>Put the OP-XY into te-boot <span class="sn" id="sn-teboot"></span></h2>
+        <ol class="howlist">
+          <li>Power the OP-XY <b>off</b>.</li>
+          <li>Hold the <b>COM</b> key while switching it on. The screen shows the te-boot menu.</li>
+          <li>Connect it to this computer with a USB cable and <b>stay on that menu</b> - the unit's MIDI interface comes up with it.</li>
+        </ol>
+        <p class="hint">Then press the button: Chrome will ask for <b>MIDI (SysEx)</b> access - click Allow.</p>
+        <div class="actions"><button id="conn" class="btn primary" disabled>Find my OP-XY</button></div>
+      </div>
+    </li>
+
+    <li class="step pending" id="s-connect">
+      <div class="num"><span class="ico">3</span><span class="tick">ok</span></div>
+      <div class="sbody">
+        <h2>Connected unit <span class="sn" id="sn-connect"></span></h2>
+        <p class="hint">This is what answered the te-boot probe over MIDI.</p>
+        <div id="unitbox" hidden>
+          <div class="unitrow"><span>serial</span><b id="ub-serial"></b></div>
+          <div class="unitrow"><span>OS version</span><b id="ub-fw"></b></div>
+          <div class="unitrow"><span>bootloader</span><b id="ub-bl"></b></div>
+        </div>
+      </div>
+    </li>
+
+    <li class="step pending" id="s-enable">
+      <div class="num"><span class="ico">4</span><span class="tick">ok</span></div>
+      <div class="sbody">
+        <h2>Enable or disable dev mode <span class="sn" id="sn-enable"></span></h2>
+        <p class="hint"><b>Check the OP-XY screen first:</b> if the menu already shows <b>3. dev menu</b>, dev mode
+          is on - nothing to enable.</p>
+        <div class="actions">
+          <button id="enable" class="btn primary" disabled>Enable dev mode</button>
+          <button id="disable" class="btn" disabled>Disable dev mode</button>
+        </div>
+        <p class="hint" style="margin-top:10px">Both buttons read OTP field <code>0x13</code> from your unit
+          (command <code>0x1F</code>), derive the <code>0xAC</code> response from it, and send the command:
+          <b>Enable</b> writes te-boot's <code>bootloader.dev</code> marker, <b>Disable</b> deletes it.</p>
+        <p class="hint"><b>Seeing the result:</b> te-boot only redraws its menu when you navigate - after either
+          button, go to another menu and back: press <b>8</b> (system menu), then <b>8</b> (back). The
+          <b>3. dev menu</b> entry then appears or disappears.</p>
+        <div id="verify" hidden>
+          <p class="hint"><b>Now look at the OP-XY screen</b> (8 &rarr; system menu, 8 &rarr; back to re-render):
+            <span id="verifyhint"></span></p>
+        </div>
+      </div>
+    </li>
+  </ol>
+
+  <details class="card" id="d-planb">
+    <summary>Plan B - manual controls</summary>
+    <p class="hint" style="margin-top:12px">Every wizard step as an individual button.</p>
+    <p class="mansub">MIDI</p>
+    <div class="row">
+      <select id="port" aria-label="MIDI output"></select>
+      <button id="useport" class="btn small">Use this port</button>
+      <button id="mm-midi" class="btn small">Find my OP-XY</button>
+    </div>
+    <p class="mansub">te-boot</p>
+    <div class="actions">
+      <button id="mm-meta" class="btn small">Read metadata (0x09)</button>
+      <button id="mm-otp" class="btn small">Read OTP field 0x13 (0x1F)</button>
+    </div>
+    <p class="mansub">Dev mode</p>
+    <div class="actions">
+      <button id="mm-on" class="btn small">Enable dev mode (0xAC)</button>
+      <button id="mm-off" class="btn small">Turn dev mode off</button>
+      <button id="mm-norm" class="btn small">Reboot to normal OS</button>
+    </div>
+    <p class="mansub">Reference - exact bytes, no device needed</p>
+    <label for="dry-otp">OTP field 0x13 of a unit (32 hex chars, optional)</label>
+    <input id="dry-otp" placeholder="e.g. 00112233445566778899aabbccddeeff" spellcheck="false">
+    <div class="actions"><button id="mm-dry" class="btn small">Show the 0x1F / 0xAC MIDI bytes</button></div>
+    <div id="dryout"></div>
+  </details>
+
+  <details class="card" id="d-log" open>
+    <summary>Live log</summary>
+    <div class="actions"><button id="clear" class="btn small">Clear</button></div>
+    <pre id="log"></pre>
+  </details>
+</main>
+
+<footer>
+  <p>Obviously, not affiliated with Teenage Engineering.</p>
+  <p><a href="https://github.com/bagofwaffles/ferret" target="_blank" rel="noopener">github.com/bagofwaffles/ferret</a></p>
+</footer>
+
+</div>
+<noscript><p style="text-align:center;padding:20px">This tool requires JavaScript.</p></noscript>
+<script src="app.js"></script>
+</body>
+</html>
