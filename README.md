@@ -1,5 +1,7 @@
 # Ferret
 
+**[bagofwaffles.github.io/ferret](https://bagofwaffles.github.io/ferret/)**
+
 Bag of Waffles' browser tools for Teenage Engineering hardware. Everything runs
 client-side: no server, no build step, nothing uploaded. The root page is a
 device picker; each device lives in its own sibling folder.
