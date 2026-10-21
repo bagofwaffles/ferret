@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ferret - OP-1 field dev mode | Bag of Waffles</title>
-<meta name="description" content="Turns on the hidden dev menu in a Teenage Engineering OP-1 field's te-boot, in your browser. No firmware, no keys - just the unit's own USB MIDI interface.">
+<title>Ferret - OP-1 Field dev mode | Bag of Waffles</title>
+<meta name="description" content="Turns on the hidden dev menu in a Teenage Engineering OP-1 Field's te-boot, in your browser. No firmware, no keys - just the unit's own USB MIDI interface.">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#FFF6E6">
 <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
@@ -20,12 +20,12 @@
     </a>
     <div class="hero-title">
       <h1><a href="../" title="Back to all Ferret tools">Ferret</a></h1>
-      <p class="tag">Turns on the hidden <b>dev menu</b> in your <span style="white-space:nowrap">OP-1 field</span>'s te-boot - in your browser. <span class="badge">unconfirmed</span></p>
+      <p class="tag">Turns on the hidden <b>dev menu</b> in your <span style="white-space:nowrap">OP-1 Field</span>'s te-boot - in your browser.</p>
     </div>
   </div>
   <div class="hero-text">
     <p class="promise">No firmware is read or written, no keys are involved, and nothing is sent to a server. The page talks to the unit's own USB MIDI interface and flips a service flag the bootloader already has.</p>
-    <p class="promise"><b>Unconfirmed on hardware:</b> the packed MIDI header and command path are verified from the te-boot <code>1000.0.34</code> disassembly, but this flow has not yet been run against a physical OP-1 field.</p>
+    
     <p class="warnbar">Dev mode enables options that could be dangerous, don't enable it unless you know what you're doing.</p>
   </div>
 </header>
@@ -33,10 +33,10 @@
 <main>
   <details class="card" id="d-how">
     <summary>How this works</summary>
-    <p class="hint" style="margin-top:12px">te-boot (the OP-1 field's bootloader) has a hidden dev mode. When it is on, the main menu gains its hidden dev entry.</p>
+    <p class="hint" style="margin-top:12px">te-boot (the OP-1 Field's bootloader) has a hidden dev mode. When it is on, the main menu gains its hidden dev entry.</p>
     <ol class="howlist">
       <li><b>The transport.</b> While the te-boot menu is on screen, the unit offers a USB MIDI interface. te-boot's console commands travel there as the same <b>COBS + CRC-8 te-serial frames</b> the desktop tools use, carried <b>7-bit packed</b> inside a TE SysEx message: <code>F0 00 20 76 &hellip; &lt;packed frame&gt; F7</code>.</li>
-      <li><b>The header.</b> The OP-1 field's packed header is <code>00 20 76 02 66</code>: te-boot 1000.0.34's MIDI handler compares exactly <code>F0 00 20 76 02 66</code>, and its reply builder emits the same envelope. That differs from the OP-XY's <code>00 20 76 21 66</code>. The page confirms the header by sending the read-only <code>0x09</code> metadata query, and Plan B lets you override it.</li>
+      <li><b>The header.</b> The OP-1 Field's packed header is <code>00 20 76 02 66</code>: te-boot 1000.0.34's MIDI handler compares exactly <code>F0 00 20 76 02 66</code>, and its reply builder emits the same envelope. That differs from the OP-XY's <code>00 20 76 21 66</code>. The page confirms the header by sending the read-only <code>0x09</code> metadata query, and Plan B lets you override it.</li>
       <li><b>The flag.</b> te-boot turns dev mode on when the file <code>bootloader.dev</code> exists - or at runtime through console command <code>0xAC</code>. This page uses the command, so nothing is flashed.</li>
       <li><b>The challenge.</b> Before acting, <code>0xAC</code> checks a 16-byte response derived from a value the unit itself reports: command <code>0x1F</code> returns OTP field <code>0x13</code>, and the response is that field XOR <code>99 4A F3 ED</code>. The page reads the field live from your unit and computes the response - no secret is stored on this site. OTP field <code>0x13</code> is a per-unit challenge, not the firmware AES key.</li>
       <li><b>No readback, no reply.</b> te-boot has no command that reports dev mode (the flag is only used to render the menu), and <code>0xAC</code> deliberately sends no reply - so the menu on the unit's screen is the one and only confirmation. The page asks you to read it. A wrong signature is a silent no-op.</li>
@@ -58,15 +58,15 @@
     <li class="step pending" id="s-teboot">
       <div class="num"><span class="ico">2</span><span class="tick">ok</span></div>
       <div class="sbody">
-        <h2>Put the OP-1 field into te-boot <span class="sn" id="sn-teboot"></span></h2>
+        <h2>Put the OP-1 Field into te-boot <span class="sn" id="sn-teboot"></span></h2>
         <ol class="howlist">
-          <li>Power the OP-1 field <b>off</b>.</li>
+          <li>Power the OP-1 Field <b>off</b>.</li>
           <li>Hold the <b>COM</b> key while switching it on. The screen shows the te-boot menu.</li>
           <li>Connect it to this computer with a USB cable and <b>stay on that menu</b> - the unit's MIDI interface comes up with it.</li>
         </ol>
         <div class="actions"><button id="teboot-ok" class="btn primary" disabled>I'm on the te-boot menu</button></div>
         <p class="hint">Then press the button below: Chrome will ask for <b>MIDI (SysEx)</b> access - click Allow.</p>
-        <div class="actions"><button id="conn" class="btn primary" disabled>Find my OP-1 field</button></div>
+        <div class="actions"><button id="conn" class="btn primary" disabled>Find my OP-1 Field</button></div>
       </div>
     </li>
 
@@ -89,7 +89,7 @@
       <div class="num"><span class="ico">4</span><span class="tick">ok</span></div>
       <div class="sbody">
         <h2>Enable or disable dev mode <span class="sn" id="sn-enable"></span></h2>
-        <p class="hint"><b>Check the OP-1 field screen first:</b> if te-boot already shows its dev entry, dev mode is on -
+        <p class="hint"><b>Check the OP-1 Field screen first:</b> if te-boot already shows its dev entry, dev mode is on -
           nothing to enable.</p>
 
         <div class="actions">
@@ -100,35 +100,17 @@
           (command <code>0x1F</code>), derive the <code>0xAC</code> response from it, and send the command:
           <b>Enable</b> writes te-boot's <code>bootloader.dev</code> marker, <b>Disable</b> deletes it.</p>
 
-        <details class="card" id="d-advanced" style="padding-left:36px;border-top:0;margin-top:8px">
-          <summary style="font-size:16px">Advanced - skip 0x1F with a known OTP field 0x13</summary>
-          <p class="hint" style="margin-top:10px">If you already read this unit's 16-byte field <code>0x13</code>,
-            paste it here. The buttons then <b>never send <code>0x1F</code></b>.
-            This is not the firmware AES key.</p>
-          <label for="otp-manual">OTP field 0x13 (32 hex chars, optional)</label>
-          <input id="otp-manual" placeholder="e.g. 00112233445566778899aabbccddeeff" spellcheck="false">
-        </details>
-
         <p class="hint"><b>Seeing the result:</b> te-boot only redraws its menu when you navigate - after either
           button, leave the menu and come back to it. The hidden dev entry then appears or disappears. A power cycle
           keeps it (the marker file persists).</p>
         <div id="verify" hidden>
-          <p class="hint"><b>Now look at the OP-1 field screen</b> (leave the menu and come back to re-render):
+          <p class="hint"><b>Now look at the OP-1 Field screen</b> (leave the menu and come back to re-render):
             <span id="verifyhint"></span></p>
         </div>
       </div>
     </li>
 
-    <li class="step pending" id="s-done">
-      <div class="num"><span class="ico">5</span><span class="tick">ok</span></div>
-      <div class="sbody">
-        <h2>Leave te-boot <span class="sn" id="sn-done"></span></h2>
-        <p class="hint">Reboot the unit back to its normal OS (te-boot control <code>0x0d 0x18</code>). A power cycle also
-          leaves te-boot; dev mode stays on until <code>bootloader.dev</code> is deleted.</p>
-        <div class="actions"><button id="reboot" class="btn primary" disabled>Reboot to normal OS</button></div>
-      </div>
-    </li>
-  </ol>
+    </ol>
 
   <details class="card" id="d-planb">
     <summary>Plan B - manual controls</summary>
@@ -137,7 +119,7 @@
     <div class="row">
       <select id="port" aria-label="MIDI output"></select>
       <button id="useport" class="btn small">Use this port</button>
-      <button id="mm-midi" class="btn small">Find my OP-1 field</button>
+      <button id="mm-midi" class="btn small">Find my OP-1 Field</button>
     </div>
     <p class="mansub">te-boot</p>
     <div class="actions">

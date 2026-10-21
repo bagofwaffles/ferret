@@ -49,7 +49,7 @@ built-in key is derived from the visitor's own file (see below).
 | key | where it comes from | decrypts |
 |---|---|---|
 | **OTP key** | read live from the TX-6 (console `0x1f` -> OTP rows 3\|4) | every TX-6 `.tfw` |
-| **Built-in key** | derived in-browser from the visitor's own file: decrypt the container with the OTP key -> `firmware/blackfin/bin/bootloader.ldr` (deflate via `DecompressionStream`) -> 32 bytes at `0x1F748` | OP-Z `.zfw`, OP-1 field <= 1.1.5; **not** TX-6 `.tfw` |
+| **Built-in key** | derived in-browser from the visitor's own file: decrypt the container with the OTP key -> `firmware/blackfin/bin/bootloader.ldr` (deflate via `DecompressionStream`) -> 32 bytes at `0x1F748` | OP-Z `.zfw`, OP-1 Field <= 1.1.5; **not** TX-6 `.tfw` |
 
 Offset `0x1F748` is deterministic because the official 1.3.3 file is SHA-pinned.
 The page ships only the **SHA-256 of the expected built-in key** - not the key -

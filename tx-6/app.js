@@ -514,7 +514,7 @@ async function deriveAndShowBuiltin() {
     if (!r.ok) throw new Error('SHA-256 mismatch');
     builtinKey = r.hex;
     $('keyout2').textContent = builtinKey;
-    $('keymeta2').textContent = 'Derived from the bootloader in your file, verified by SHA-256. Decrypts OP-Z and OP-1 field <= 1.1.5 firmware; not used by TX-6 .tfw.';
+    $('keymeta2').textContent = 'Derived from the bootloader in your file, verified by SHA-256. Decrypts OP-Z and OP-1 Field <= 1.1.5 firmware; not used by TX-6 .tfw.';
     log('built-in key derived from bootloader.ldr - SHA-256 verified', 'ok');
   } catch (e) {
     log('built-in key derivation failed: ' + e.message, 'err');

@@ -1,10 +1,10 @@
 "use strict";
 /* Ferret - a Bag of Waffles tool.
-   Enables the hidden dev menu on a Teenage Engineering OP-1 field, entirely in
+   Enables the hidden dev menu on a Teenage Engineering OP-1 Field, entirely in
    the browser. WebMIDI only: while its menu is up, te-boot exposes a USB MIDI
    interface, and the te-boot console commands travel inside TE SysEx.
 
-   The OP-1 field's packed SysEx header is 00 20 76 02 66 (verified in the
+   The OP-1 Field's packed SysEx header is 00 20 76 02 66 (verified in the
    te-boot 1000.0.34 MidiCommandHandler at 0x889e2a08: it compares
    F0 00 20 76 02 66 and the reply builder 0x889e2410 emits the same envelope).
    The OP-XY uses 00 20 76 21 66. The page probes the known headers with the
@@ -40,12 +40,12 @@ function parseFrame(b) { if (b.length < 5) return null; const seq = b[1], type =
 
 /* ---------------- TE SysEx framing ----------------
    Packed te-serial (what carries the full console command set):
-     F0 00 20 76 02 66 <7-bit-packed COBS wire> F7      (OP-1 field)
+     F0 00 20 76 02 66 <7-bit-packed COBS wire> F7      (OP-1 Field)
      F0 00 20 76 21 66 <7-bit-packed COBS wire> F7      (OP-XY)
    TE-MIDI (identity / metadata only):
      F0 00 20 76 <dev> 40 <40|20|rid_hi> <rid_lo> <cmd> <7-bit data> F7  */
 const HEADER_CANDIDATES = [
-  [0x00, 0x20, 0x76, 0x02, 0x66],   /* OP-1 field - exact header from te-boot */
+  [0x00, 0x20, 0x76, 0x02, 0x66],   /* OP-1 Field - exact header from te-boot */
   [0x00, 0x20, 0x76, 0x21, 0x66],   /* OP-XY packed header */
   [0x00, 0x20, 0x76, 0x02, 0x21],
   [0x00, 0x20, 0x76, 0x02, 0x00],
@@ -129,7 +129,7 @@ function onMidi(ev) {
 }
 function onStateChange() {
   if (midiOut && midiOut.state === 'disconnected') {
-    log('MIDI port "' + portName + '" dropped (unit rebooting?) - press "Find my OP-1 field" again when it is back', 'warn');
+    log('MIDI port "' + portName + '" dropped (unit rebooting?) - press "Find my OP-1 Field" again when it is back', 'warn');
     midiOut = null; midiIn = null; packedReady = false;
   }
 }
@@ -186,7 +186,7 @@ async function teMidiRequest(cmd, payload = new Uint8Array(0), timeout = 1500) {
 }
 /* packed te-serial: the full console command set */
 function sendPacked(cmd, payload = new Uint8Array(0)) {
-  if (!midiOut) { log('no MIDI port open - press "Find my OP-1 field" first', 'err'); return false; }
+  if (!midiOut) { log('no MIDI port open - press "Find my OP-1 Field" first', 'err'); return false; }
   if (!header) { log('no packed te-serial header selected - probe headers first', 'err'); return false; }
   const msg = packedSysex(header, cmd, payload);
   try { midiOut.send(msg); } catch (e) { log('MIDI send failed: ' + errMsg(e), 'err'); return false; }
@@ -255,7 +255,7 @@ async function connectMIDI() {
     }
   }
   const outs = [...access.outputs.values()].filter(o => o.state !== 'disconnected');
-  if (!outs.length) { log('no MIDI outputs found - is the OP-1 field plugged in and powered on?', 'err'); return null; }
+  if (!outs.length) { log('no MIDI outputs found - is the OP-1 Field plugged in and powered on?', 'err'); return null; }
   const sel = $('port'); if (sel) sel.innerHTML = outs.map(o => `<option>${o.name.replace(/[<>&]/g, '')}</option>`).join('');
 
   /* open every input so replies are heard no matter which port answers */
@@ -309,7 +309,7 @@ async function connectMIDI() {
   } else {
     log('no packed te-serial header answered. The unit is talking MIDI, but this', 'err');
     log('MIDI personality is not accepting the console command set (0x09).', 'err');
-    log('If you know the OP-1 field header, paste it in Plan B -> Transport and probe again.', 'warn');
+    log('If you know the OP-1 Field header, paste it in Plan B -> Transport and probe again.', 'warn');
   }
   return meta || { text: '', fields: {} };
 }
@@ -326,19 +326,12 @@ function st(id, cls, note) {
 }
 const activate = (id, note) => st(id, 'active', note);
 
-function manualOtp() {
-  const s = ($('otp-manual') ? $('otp-manual').value : '').trim().replace(/\s+/g, '');
-  if (!s) return null;
-  if (!/^[0-9a-fA-F]{32}$/.test(s)) return 'invalid';
-  return Uint8Array.from(s.match(/../g).map(h => parseInt(h, 16)));
-}
 function refresh() {
   $('conn').disabled = !(checkOk && tebootOk);
   const on = midiReady && packedReady;
   $('enable').disabled = !on;
   $('disable').disabled = !on;
   $('verify').hidden = !devSent;
-  $('reboot').disabled = !(midiReady && packedReady);
 }
 
 function supportCheck() {
@@ -362,7 +355,7 @@ function supportCheck() {
 
 function showUnit(meta) {
   const f = meta.fields;
-  if (f.product && f.product !== 'OP-1') log('that answered as "' + f.product + '", not an OP-1 field - continue only if you know what you are doing', 'warn');
+  if (f.product && f.product !== 'OP-1') log('that answered as "' + f.product + '", not an OP-1 Field - continue only if you know what you are doing', 'warn');
   if (f.mode && f.mode !== 'bootloader') log('te-boot reports mode "' + f.mode + '" - the dev menu normally lives in mode:bootloader', 'warn');
   $('ub-serial').textContent = f.serial || '(unknown)';
   $('ub-fw').textContent = f.os_version || '(unknown)';
@@ -383,11 +376,11 @@ async function connectFlow() {
     st('connect', packedReady ? 'done' : 'fail', packedReady ? 'connected' : 'MIDI metadata only');
     showUnit(meta);
     if (meta.text) log('te-boot: ' + meta.text, 'ok');
-    if (packedReady) { activate('enable'); activate('done'); }
+    if (packedReady) activate('enable');
   } else {
     st('teboot', 'fail', 'no answer - see the log');
     log('Checklist:', 'warn');
-    log('  - the OP-1 field must be in its te-boot menu: power off, hold COM while powering on', 'warn');
+    log('  - the OP-1 Field must be in its te-boot menu: power off, hold COM while powering on', 'warn');
     log('  - the unit\'s MIDI interface only exists while that menu is up', 'warn');
     log('  - normal OS mode does not answer these commands; MIDI (SysEx) permission must be allowed', 'warn');
   }
@@ -396,26 +389,19 @@ async function connectFlow() {
 
 /* Step 4: enable or disable the dev marker (same command, write or delete op) */
 async function devMarkerFlow(enable) {
-  if (!midiReady || !packedReady) { log('no packed te-boot link - press "Find my OP-1 field" first', 'err'); return; }
+  if (!midiReady || !packedReady) { log('no packed te-boot link - press "Find my OP-1 Field" first', 'err'); return; }
   $('enable').disabled = true; $('disable').disabled = true;
-  const manual = manualOtp();
-  if (manual === 'invalid') { log('the known OTP field 0x13 must be exactly 32 hex chars (16 bytes)', 'err'); refresh(); return; }
 
-  let otp = manual;
-  if (otp === null) {
-    st('enable', 'active', 'reading OTP field 0x13 (0x1F)...');
-    otp = await readOtp13();
-    if (!otp) {
-      st('enable', 'fail', 'no answer to 0x1F - see the log');
-      log('command 0x1F gave no 16-byte reply.', 'err');
-      log('If the unit has gone quiet, power-cycle it, then press "Find my OP-1 field" again.', 'warn');
-      log('Otherwise: is the unit still on its te-boot menu?', 'warn');
-      refresh(); return;
-    }
-    log('OTP field 0x13 = ' + hex(otp) + ' (a per-unit challenge value - not the firmware key)', 'rx');
-  } else {
-    log('using the OTP field 0x13 you supplied - 0x1F was not sent', 'info');
+  st('enable', 'active', 'reading OTP field 0x13 (0x1F)...');
+  const otp = await readOtp13();
+  if (!otp) {
+    st('enable', 'fail', 'no answer to 0x1F - see the log');
+    log('command 0x1F gave no 16-byte reply.', 'err');
+    log('If the unit has gone quiet, power-cycle it, then press "Find my OP-1 Field" again.', 'warn');
+    log('Otherwise: is the unit still on its te-boot menu?', 'warn');
+    refresh(); return;
   }
+  log('OTP field 0x13 = ' + hex(otp) + ' (a per-unit challenge value - not the firmware key)', 'rx');
   log('0xAC response   = ' + hex(devSignature(otp)), 'info');
   st('enable', 'active', 'sending the dev-mode command...');
   if (!(await packedRequest(CMD_DEV, devPayload(otp, enable), null))) { st('enable', 'fail', 'could not send'); refresh(); return; }
@@ -437,15 +423,15 @@ async function devMarkerFlow(enable) {
 }
 
 async function rebootNormal() {
-  if (!midiReady || !packedReady) { log('no packed te-boot link - press "Find my OP-1 field" first', 'err'); return; }
+  if (!midiReady || !packedReady) { log('no packed te-boot link - press "Find my OP-1 Field" first', 'err'); return; }
   const ok = await packedRequest(CMD_CONTROL, Uint8Array.from([0x18]), null, 600);
   log(ok ? 'sent reboot to the normal OS (0x0d 0x18) - the unit leaves te-boot.' : 'could not send the reboot command - power-cycle the unit instead.', ok ? 'ok' : 'warn');
-  if (ok) { st('done', 'done', 'rebooting to normal OS'); midiReady = false; packedReady = false; midiOut = null; midiIn = null; refresh(); }
+  if (ok) { midiReady = false; packedReady = false; midiOut = null; midiIn = null; refresh(); }
 }
 
 /* ---------------- Plan B ---------------- */
 async function manualInfo() {
-  if (!midiOut) { log('no MIDI port open - press "Find my OP-1 field" first', 'err'); return; }
+  if (!midiOut) { log('no MIDI port open - press "Find my OP-1 Field" first', 'err'); return; }
   const greet = await teMidiRequest(CMD_GREET, new Uint8Array(0), 1200);
   if (greet && greet.status === 0x00) log('TE-MIDI metadata: ' + parseMeta({ payload: greet.data }).text, 'ok');
   else log('no TE-MIDI greet reply', 'warn');
@@ -462,7 +448,7 @@ async function manualOtpRead() {
   log('0xAC response   = ' + hex(devSignature(otp)), 'info');
 }
 async function probeFlow() {
-  if (!midiOut) { log('no MIDI port open - press "Find my OP-1 field" first', 'err'); return; }
+  if (!midiOut) { log('no MIDI port open - press "Find my OP-1 Field" first', 'err'); return; }
   const manual = parseHeaderInput();
   if (manual === 'invalid') { log('the header must be 10 hex chars (5 bytes after F0)', 'err'); return; }
   const r = await probeHeaders(manual);
@@ -471,7 +457,7 @@ async function probeFlow() {
     const meta = parseMeta(r);
     showUnit(meta);
     log('packed link ready: ' + meta.text, 'ok');
-    activate('enable'); activate('done');
+    activate('enable');
   } else {
     log('none of the probed headers answered. te-boot\'s MIDI personality may only route', 'err');
     log('its DFU set on this firmware; paste the exact 5-byte header in Plan B if you know it.', 'warn');
@@ -511,7 +497,7 @@ window.addEventListener('DOMContentLoaded', () => {
   $('teboot-ok').onclick = () => {
     tebootOk = true;
     st('teboot', 'done', 'te-boot menu');
-    log('press "Find my OP-1 field" and allow MIDI (SysEx)', 'info');
+    log('press "Find my OP-1 Field" and allow MIDI (SysEx)', 'info');
     refresh();
   };
 
@@ -519,14 +505,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
   $('enable').onclick = () => devMarkerFlow(true);
   $('disable').onclick = () => devMarkerFlow(false);
-  $('reboot').onclick = rebootNormal;
 
   /* Plan B */
   $('mm-midi').onclick = connectFlow;
   $('useport').onclick = async () => {
     const name = $('port').value;
     if (!name) { log('pick a MIDI output first', 'warn'); return; }
-    if (!access) { log('press "Find my OP-1 field" first', 'err'); return; }
+    if (!access) { log('press "Find my OP-1 Field" first', 'err'); return; }
     if (!(await openPair(name))) { log('could not open "' + name + '"', 'err'); return; }
     const greet = await teMidiRequest(CMD_GREET, new Uint8Array(0), 1200);
     if (greet) { midiReady = true; log('port "' + name + '" answers te-boot', 'ok'); }
@@ -543,6 +528,6 @@ window.addEventListener('DOMContentLoaded', () => {
   $('mm-dry').onclick = dryRun;
   $('clear').onclick = () => { logEl().textContent = ''; };
 
-  log('Ready. Flow: power on with COM held (te-boot menu) -> Find my OP-1 field -> enable dev mode.', 'ok');
+  log('Ready. Flow: power on with COM held (te-boot menu) -> Find my OP-1 Field -> enable dev mode.', 'ok');
   log('Nothing is uploaded, and no firmware is read or written by this page.', 'info');
 });

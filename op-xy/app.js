@@ -23,7 +23,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const errMsg = e => (e && e.message) ? e.message : String(e);
 
 /* ---------------- TE serial protocol (COBS + CRC-8) ----------------
-   Identical framing to the TX-6 / OP-1 field console:
+   Identical framing to the TX-6 / OP-1 Field console:
      wire = COBS(body) + 0x00
      body = [route][seq][cmd][len][payload][crc8]
    route host->te-boot = 0x21; crc8 = poly 0x4D reflected, init/xorout 0xFF. */

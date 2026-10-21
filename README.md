@@ -10,6 +10,7 @@ device picker; each device lives in its own sibling folder.
 |---|---|---|
 | **TX-6** | [tx-6/](tx-6/) | Reads the unit's AES-256 keys in the browser - no server, no build step |
 | **OP-XY** | [op-xy/](op-xy/) | Walks you through enabling the hidden dev menu in te-boot, over the unit's USB MIDI interface |
+| **OP-1 Field** | [op-1f/](op-1f/) | Same dev-mode toggle for the OP-1 Field, over its USB MIDI interface |
 
 More devices will land as sibling folders next to `tx-6/` and `op-xy/`, with a
 card on the root page.
@@ -21,7 +22,7 @@ Ferret reads the two AES-256 keys that matter around TE firmware:
 - **OTP key** - read live from your TX-6 over its USB console (msg `0x1f` -> OTP
   rows 3 and 4). Decrypts every TX-6 `.tfw`.
 - **Built-in key** - derived at runtime from your own official firmware file and
-  verified against a pinned SHA-256. Decrypts OP-Z `.zfw` and OP-1 field <= 1.1.5
+  verified against a pinned SHA-256. Decrypts OP-Z `.zfw` and OP-1 Field <= 1.1.5
   firmware.
 
 **This repository contains no keys and no TE firmware.** The OTP key is read from
@@ -43,6 +44,18 @@ No firmware and no keys are involved: te-boot writes its own `bootloader.dev`
 marker, and Plan B can turn the mode back off. Full write-up in
 [`op-xy/README.md`](op-xy/README.md).
 
+## Ferret - OP-1 Field dev mode
+
+The same hidden dev mode, for the OP-1 Field, again entirely in the browser. It
+finds the unit's te-boot USB MIDI interface and sends the packed te-serial
+frames the bootloader accepts (`F0 00 20 76 02 66 ... F7`) - the header was
+recovered from te-boot `1000.0.34` and differs from the OP-XY's `21 66`. The
+`0xAC` challenge comes from a live `0x1F` read of OTP field `0x13`.
+
+Confirmed working on hardware.
+
+Full write-up in [`op-1f/README.md`](op-1f/README.md).
+
 Run it locally:
 
 ```bash
@@ -55,7 +68,8 @@ JavaScript. Serve the repo root so `../assets/` resolves.
 
 Requires **Chrome or Edge on a desktop** (the tools use File System Access, Web
 Serial and WebMIDI, which all need a secure context). Per-tool technical
-write-ups: [`tx-6/README.md`](tx-6/README.md) and [`op-xy/README.md`](op-xy/README.md).
+write-ups: [`tx-6/README.md`](tx-6/README.md), [`op-xy/README.md`](op-xy/README.md)
+and [`op-1f/README.md`](op-1f/README.md).
 
 ## Disclaimers
 
