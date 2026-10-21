@@ -25,7 +25,7 @@ jobs:
       - name: Stage the site (tool folders + root page)
         run: |
           mkdir _site
-          cp -R index.html assets README.md LICENSE tx-6 op-xy _site/
+          cp -R index.html assets README.md LICENSE tx-6 op-xy op-1f _site/
           # (add new device folders to the line above)
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

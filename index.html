@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ferret - browser tools for TE hardware | Bag of Waffles</title>
-<meta name="description" content="Bag of Waffles' browser tools for Teenage Engineering hardware: a TX-6 key reader and an OP-XY dev-mode enabler. Client-side only - nothing is uploaded.">
+<meta name="description" content="Bag of Waffles' browser tools for Teenage Engineering hardware: a TX-6 key reader, an OP-XY dev-mode enabler and an OP-1 field dev-mode enabler. Client-side only - nothing is uploaded.">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#FFF6E6">
 <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
@@ -48,6 +48,15 @@
           unit's own USB MIDI interface. No firmware is read or written, no keys are involved - te-boot just writes
           its own <code>bootloader.dev</code> marker.</span>
         <span class="dmeta">writes no firmware; the dev menu itself can be destructive - read the page</span>
+      </a>
+    </li>
+    <li class="device">
+      <a href="op-1f/">
+        <span class="drow"><span class="dname">OP-1 field</span><span class="dwhat">dev mode</span><span class="badge">unconfirmed</span><span class="dgo">open &rarr;</span></span>
+        <span class="ddesc">Walks you through enabling the hidden dev entry in the OP-1 field's te-boot, over the unit's
+          own USB MIDI interface. No firmware is read or written, no keys are involved - te-boot just writes its own
+          <code>bootloader.dev</code> marker.</span>
+        <span class="dmeta">unconfirmed on hardware - the packed MIDI header is verified from te-boot disassembly</span>
       </a>
     </li>
   </ul>

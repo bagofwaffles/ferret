@@ -201,3 +201,14 @@ label.drop{font:inherit;color:#A78F76;margin:14px 0 2px}
 #dryout{margin-top:12px}
 .wire{background:var(--brown);color:#F7EAD6;border-radius:10px;padding:12px;
   font:13.8px/1.6 var(--mono);white-space:pre-wrap;word-break:break-all;margin:8px 0 0}
+
+/* ---------------- OP-1 field ---------------- */
+
+/* unconfirmed badge */
+.badge{display:inline-block;font:800 11.5px/1.4 var(--font);letter-spacing:.05em;text-transform:uppercase;
+  padding:2px 8px;border-radius:999px;background:var(--err-bg);border:1px solid #F3C1B3;color:#B1401F;
+  vertical-align:middle;white-space:nowrap}
+
+/* challenge / header inputs */
+#otp-manual,#hdr{font:14.9px/1.5 var(--mono)}
+a.btn{text-decoration:none}
