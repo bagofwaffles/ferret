@@ -1,5 +1,7 @@
 # Ferret - OP-1 Field dev mode | a **Bag of Waffles** tool
 
+> **Supported firmware: latest confirmed working OP-1 Field firmware is 1.7.3+1.**
+
 Turns on the hidden **dev menu** in a Teenage Engineering OP-1 Field's te-boot -
 entirely in the browser, no server, no build step, nothing uploaded.
 

@@ -8,30 +8,19 @@ device picker; each device lives in its own sibling folder.
 
 | device | tool | what it does |
 |---|---|---|
-| **TX-6** | [tx-6/](tx-6/) | Reads the unit's AES-256 keys in the browser - no server, no build step |
 | **OP-XY** | [op-xy/](op-xy/) | Walks you through enabling the hidden dev menu in te-boot, over the unit's USB MIDI interface |
 | **OP-1 Field** | [op-1f/](op-1f/) | Same dev-mode toggle for the OP-1 Field, over its USB MIDI interface |
+| **TX-6** | [tx-6/](tx-6/) | Reads the unit's AES-256 keys in the browser - no server, no build step |
 
-More devices will land as sibling folders next to `tx-6/` and `op-xy/`, with a
+> **Firmware compatibility - check before you start:**
+>
+> - **OP-XY: firmware 1.2.1 and earlier only.** In 1.2.5 TE removed our ability
+>   to enable dev mode (confirmed).
+> - **OP-1 Field:** latest confirmed working firmware is **1.7.3+1**.
+> - **TX-6:** latest confirmed working firmware is **1.3.3** (not 1.3.3+1).
+
+More devices will land as sibling folders next to `op-xy/`, `op-1f/` and `tx-6/`, with a
 card on the root page.
-
-## Ferret - TX-6 key reader
-
-Ferret reads the two AES-256 keys that matter around TE firmware:
-
-- **OTP key** - read live from your TX-6 over its USB console (msg `0x1f` -> OTP
-  rows 3 and 4). Decrypts every TX-6 `.tfw`.
-- **Built-in key** - derived at runtime from your own official firmware file and
-  verified against a pinned SHA-256. Decrypts OP-Z `.zfw` and OP-1 Field <= 1.1.5
-  firmware.
-
-**This repository contains no keys and no TE firmware.** The OTP key is read from
-the connected unit; the built-in key is computed from the visitor's own
-`tx-6_firmware_1_3_3.tfw` in their browser. Nothing is ever sent to a server.
-
-> ** Flashing modifies your unit's firmware - use at your own risk. ** 
-> It goes in as a normal firmware update, and when you're done the page has you
-> **re-flash the factory firmware** so the patched build doesn't stay on your unit.
 
 ## Ferret - OP-XY dev mode
 
@@ -56,6 +45,24 @@ Confirmed working on hardware.
 
 Full write-up in [`op-1f/README.md`](op-1f/README.md).
 
+## Ferret - TX-6 key reader
+
+Ferret reads the two AES-256 keys that matter around TE firmware:
+
+- **OTP key** - read live from your TX-6 over its USB console (msg `0x1f` -> OTP
+  rows 3 and 4). Decrypts every TX-6 `.tfw`.
+- **Built-in key** - derived at runtime from your own official firmware file and
+  verified against a pinned SHA-256. Decrypts OP-Z `.zfw` and OP-1 Field <= 1.1.5
+  firmware.
+
+**This repository contains no keys and no TE firmware.** The OTP key is read from
+the connected unit; the built-in key is computed from the visitor's own
+`tx-6_firmware_1_3_3.tfw` in their browser. Nothing is ever sent to a server.
+
+> ** Flashing modifies your unit's firmware - use at your own risk. ** 
+> It goes in as a normal firmware update, and when you're done the page has you
+> **re-flash the factory firmware** so the patched build doesn't stay on your unit.
+
 Run it locally:
 
 ```bash
@@ -68,8 +75,8 @@ JavaScript. Serve the repo root so `../assets/` resolves.
 
 Requires **Chrome or Edge on a desktop** (the tools use File System Access, Web
 Serial and WebMIDI, which all need a secure context). Per-tool technical
-write-ups: [`tx-6/README.md`](tx-6/README.md), [`op-xy/README.md`](op-xy/README.md)
-and [`op-1f/README.md`](op-1f/README.md).
+write-ups: [`op-xy/README.md`](op-xy/README.md), [`op-1f/README.md`](op-1f/README.md)
+and [`tx-6/README.md`](tx-6/README.md).
 
 ## Disclaimers
 

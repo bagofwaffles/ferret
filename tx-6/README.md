@@ -1,5 +1,7 @@
 # Ferret - TX-6 key reader | a **Bag of Waffles** tool
 
+> **Supported firmware: latest confirmed working TX-6 firmware is 1.3.3 (NOT 1.3.3+1).**
+
 Ferret is a fully client-side wizard that reads the AES-256 keys out of a
 Teenage Engineering TX-6 firmware update file - no server, no backend, no build
 step, nothing uploaded.

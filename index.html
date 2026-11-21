@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ferret - browser tools for TE hardware | Bag of Waffles</title>
-<meta name="description" content="Bag of Waffles' browser tools for Teenage Engineering hardware: a TX-6 key reader, an OP-XY dev-mode enabler and an OP-1 Field dev-mode enabler. Client-side only - nothing is uploaded.">
+<meta name="description" content="Bag of Waffles' browser tools for Teenage Engineering hardware: an OP-XY dev-mode enabler, an OP-1 Field dev-mode enabler and a TX-6 key reader. Client-side only - nothing is uploaded.">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#FFF6E6">
 <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
@@ -26,6 +26,13 @@
   <div class="hero-text">
     <p class="promise">Every tool runs entirely in your browser - no server, no accounts, nothing uploaded. Each
       one talks to your unit over its own USB interface and stores nothing about it.</p>
+    <div class="warnbar"><b>Firmware compatibility:</b>
+      <ul>
+        <li><b>OP-XY: firmware 1.2.1 and earlier only.</b> In 1.2.5 TE removed our ability to enable dev mode (confirmed).</li>
+        <li><b>OP-1 Field:</b> latest confirmed working firmware is <b>1.7.3+1</b>.</li>
+        <li><b>TX-6:</b> latest confirmed working firmware is <b>1.3.3</b> (not 1.3.3+1).</li>
+      </ul>
+    </div>
     <p class="promise">Pick a device:</p>
   </div>
 </header>
@@ -33,21 +40,13 @@
 <main>
   <ul class="devices">
     <li class="device">
-      <a href="tx-6/">
-        <span class="drow"><span class="dname">TX-6</span><span class="dwhat">key reader</span><span class="dgo">open &rarr;</span></span>
-        <span class="ddesc">Reads the unit's AES-256 keys in the browser: the OTP key straight from your connected
-          TX-6, the built-in key derived from your own official firmware file. It installs a tiny patched
-          bootloader to do the read, and walks you through re-flashing the factory firmware afterwards.</span>
-        <span class="dmeta warn">modifies the unit's firmware (reversibly) - use at your own risk</span>
-      </a>
-    </li>
-    <li class="device">
       <a href="op-xy/">
         <span class="drow"><span class="dname">OP-XY</span><span class="dwhat">dev mode</span><span class="dgo">open &rarr;</span></span>
         <span class="ddesc">Walks you through enabling the hidden <b>3. dev menu</b> in the OP-XY's te-boot, over the
           unit's own USB MIDI interface. No firmware is read or written, no keys are involved - te-boot just writes
           its own <code>bootloader.dev</code> marker.</span>
         <span class="dmeta">writes no firmware; the dev menu itself can be destructive - read the page</span>
+        <span class="dmeta fw warn"><b>firmware 1.2.1 or earlier only</b> - in 1.2.5 TE removed our ability to enable dev mode</span>
       </a>
     </li>
     <li class="device">
@@ -57,6 +56,17 @@
           own USB MIDI interface. No firmware is read or written, no keys are involved - te-boot just writes its own
           <code>bootloader.dev</code> marker.</span>
         <span class="dmeta">confirmed working on hardware</span>
+        <span class="dmeta fw">latest confirmed working firmware: <b>1.7.3+1</b></span>
+      </a>
+    </li>
+    <li class="device">
+      <a href="tx-6/">
+        <span class="drow"><span class="dname">TX-6</span><span class="dwhat">key reader</span><span class="dgo">open &rarr;</span></span>
+        <span class="ddesc">Reads the unit's AES-256 keys in the browser: the OTP key straight from your connected
+          TX-6, the built-in key derived from your own official firmware file. It installs a tiny patched
+          bootloader to do the read, and walks you through re-flashing the factory firmware afterwards.</span>
+        <span class="dmeta warn">modifies the unit's firmware (reversibly) - use at your own risk</span>
+        <span class="dmeta fw">latest confirmed working firmware: <b>1.3.3</b> (not 1.3.3+1)</span>
       </a>
     </li>
   </ul>

@@ -1,5 +1,8 @@
 # Ferret - OP-XY dev mode | a **Bag of Waffles** tool
 
+> **Supported firmware: OP-XY firmware 1.2.1 and earlier only.** In firmware **1.2.5**
+> TE removed our ability to enable dev mode (confirmed).
+
 Turns on the hidden **dev menu** in a Teenage Engineering OP-XY's te-boot -
 entirely in the browser, no server, no build step, nothing uploaded.
 

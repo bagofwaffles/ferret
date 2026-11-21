@@ -39,6 +39,8 @@ code{font:600 14.3px var(--mono);background:#FFF3DA;border:1px solid #F1DFC3;bor
 .warnbar{margin:14px 0 0;padding:10px 14px;background:var(--err-bg);border:1px solid #F3C1B3;
   border-radius:6px;font-size:14.9px;color:#8C3A22}
 .warnbar b{color:#B1401F}
+.warnbar ul{margin:6px 0 0;padding-left:20px}
+.warnbar li{margin:3px 0}
 @media(max-width:640px){.wrap{padding:0 18px 30px;margin:14px auto}.hero{padding:20px 0 18px}.hero-head{gap:14px}.logo{width:86px;height:86px}.tag{font-size:16.5px}}
 
 /* step cards */
@@ -156,6 +158,8 @@ footer b{font-weight:800}
 .ddesc b{color:#6F5B47}
 .dmeta{display:block;margin-top:10px;font-size:13.7px;color:#A78F76}
 .dmeta.warn{color:#B1401F}
+.dmeta.fw{margin-top:4px}
+.dmeta b{color:inherit;font-weight:800}
 
 /* ---------------- TX-6 ---------------- */
 
